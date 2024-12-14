@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/index.js"></script>
 </head>
 <body>
     <header>
         <nav>
             <ul>
                 <li class="">
-                    <a href="/" class="active">Home</a>
+                    <a href="/" class="">Home</a>
                 </li>
-                <li>
-                    <a href="/tours/">Tours</a>
+                <li class="">
+                    <a href="/tours/" class="active">Tours</a>
                 </li>
                 <li>
                     <a href="/profile/">Profile</a>
@@ -25,7 +26,7 @@
             </ul>
         </nav>
         <img src="/assets/images/logo.png" alt="">
-        <div>
+        <div class="header-buttons">
             <button type="button" class="loginBTN">Login</button>
             <button type="button" class="signupBTN">Sign Up</button>
         </div>
@@ -33,7 +34,30 @@
     <main>
         <section>
             <div class="container">
-                <h1>Top 10 Most Visited Countries</h1>
+                <div class="filter">
+                    <label for="filter">Filter:</label>
+                    <select name="filter" id="filter">
+                        <option value="most-visited">Alphabetical</option>
+                        <option value="least-visited">Most Visited</option>
+                        <option value="newest">By Region</option>
+                        <option value="oldest">By Budget</option>
+                    </select>
+                </div>
+                <div class="search">
+                    <div id="country-filter">
+                        <a href="">See All Countries</a>
+                        <div style="display: none;">
+                            <button></button>
+                            <span>$</span>
+                            <div></div>
+                            <input type="text" name="" id="">
+                        </div>
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search Country">
+                        <button type="button">Search</button>
+                    </div>
+                </div>
                 <div class="country-list">
                     <div class="country-card">
                         <img src="/assets/images/france.png" alt="">
