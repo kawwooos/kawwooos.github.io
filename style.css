@@ -91,6 +91,12 @@ main section div .country-list {
     overflow-x: auto;
 }
 
+main section div .country-list.all-countries {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 main section div .country-list::-webkit-scrollbar {
     display: none;
 }
@@ -228,8 +234,7 @@ main section div .main-content .country-map .pin {
 }
 
 main section div .main-content .country-map img {
-    height: 90%;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 10px;
 }
 
@@ -795,7 +800,7 @@ div.recommended-tours .tour-list .tour-card > * {
     flex-direction: row;
     gap: 1rem;
     align-items: center;
-    max-height: 50px;
+    /* max-height: 50px; */
     text-overflow: ellipsis;
 }
 
