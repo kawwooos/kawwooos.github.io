@@ -101,13 +101,15 @@
 
                             let body = doc.querySelector('body');
 
-                            body.querySelector('.country-map img').src = data.TourImage || 'https://res.cloudinary.com/dos4lbpez/image/upload/v1734269786/licensed-image_llne70.jpg';
+                            body.querySelector('country-map img').src = data.TourImage || 'https://res.cloudinary.com/dos4lbpez/image/upload/v1734269786/licensed-image_llne70.jpg';
 
                             body.querySelector('h1.title').innerText = data.TourName;
                             body.querySelector('p.description').innerText = data.TourDescription;
                             body.querySelector('span.price').innerText = data.BudgetFrom + ' to ' + data.BudgetTo;
 
-                            body.querySelector('.add-to-travel-list').disabled = true;
+                            body.querySelector('.add-to-travel-list').onclick = () => {
+                                alert('Added to Travel List');
+                            };
 
                             document.body.innerHTML = body.innerHTML;
 
