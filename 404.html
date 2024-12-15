@@ -42,7 +42,6 @@
                             // bodydoc.querySelector('img').src = data.image;
 
                             //pins
-                            let pins = bodydoc.querySelector('div.country-map');
                             data.tours.forEach(tour => {
                                 let a = document.createElement('a');
                                 a.href = `/tours/${country}/${tour["name"]}`;
@@ -52,14 +51,14 @@
                                 a.classList.add('pin');
                                 a.style.top = `${tour["xy"].split(",")[0]}%`;
                                 a.style.left = `${tour["xy"].split(",")[1]}%`;
-                                pins.appendChild(a);
+                                bodydoc.querySelector('div.country-map').appendChild(a);
 
                             });
 
-                            body.querySelector('h1.title').innerText = data.name;
-                            body.querySelector('p.description').innerText = data.description;
+                            bodydoc.querySelector('h1.title').innerText = data.name;
+                            bodydoc.querySelector('p.description').innerText = data.description;
 
-                            document.body.innerHTML = body.innerHTML;
+                            document.body.innerHTML = bodydoc.innerHTML;
 
                         });
 
