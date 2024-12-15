@@ -237,8 +237,9 @@ main section div .main-content div .title {
     display: inline-block;
     color: transparent; 
     background-clip: text;
-    background-image: url("/assets/images/flags/francepng.png");
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Luxembourg.svg/2000px-Flag_of_Luxembourg.svg.png");
     background-size: cover;
+    background-position: center;
     filter: brightness(2);
     -webkit-background-clip: text;
     z-index: 1;

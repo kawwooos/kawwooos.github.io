@@ -1,11 +1,42 @@
 const currentURL = window.location.href;
 const path = window.location.pathname;
 let paths = path.split('/');
-const apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
-// const apilink = "https://wild-mouse-612a.princeojeda52.workers.dev/";
-// const apilink = "http://127.0.0.1:8787/";
+let apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
+// let apilink = "https://wild-mouse-612a.princeojeda52.workers.dev/";
+// let apilink = "http://127.0.0.1:8787/";
 
 let recommendedToursList = []
+let allCountriesList = []
+
+const filterCountries = (searchValue) => {}
+
+const searchCountry = async () => {
+
+    const searchInput = document.getElementById('search-country');
+    const searchValue = searchInput.value.toLowerCase();
+
+    if (searchValue.length > 0) {
+        const filteredCountries = allCountriesList.filter(country => country.name.toLowerCase().includes(searchValue));
+        const countryContainer = document.getElementsByClassName('country-list')[0];
+        countryContainer.innerHTML = '';
+
+        for (let i = 0; i < filteredCountries.length; i++) {
+            try {
+                const country = filteredCountries[i];
+                const countryCard = document.createElement('div');
+                countryCard.className = 'country-card';
+                countryCard.innerHTML = `<img src="${country.thumbnail}" alt="${country.name}"><span>${country.name}</span>`;
+                countryCard.onclick = () => {
+                    window.location.href = `/tours/${country.name}`;
+                }
+                countryContainer.appendChild(countryCard);
+            } catch (error) {
+
+            }
+        }
+    }
+
+}
 
 const addToTravelList = async () => {
     // current url is /tours/{country}/{tour}
@@ -49,6 +80,7 @@ const getAllCountries = async () => {
 
         if (response.ok) {
             const responseData = await response.json();
+            allCountriesList = responseData;
             return responseData;
         } else {
             console.error('Failed to get countries');
@@ -85,7 +117,6 @@ const getRecommendedTours = async () => {
                 'Content-Type': 'application/json',
             },
         });
-
         if (response.ok) {
             const responseData = await response.json();
             return responseData;
@@ -208,6 +239,7 @@ if (paths[1] === "" || paths[1] === "index.html") {
                 span.innerText = tours[i].name;
                 card.appendChild(img);
                 card.appendChild(span);
+                countryList.appendChild(card);
             }
 
             container.appendChild(h2);
@@ -219,7 +251,6 @@ if (paths[1] === "" || paths[1] === "index.html") {
             }
         });
     }
-
 
 }
 
@@ -237,11 +268,18 @@ if (paths[1] === "tours") {
         getAllCountries().then(countries => {
             const countryContainer = document.getElementsByClassName('country-list')[0];
             for (let i = 0; i < countries.length; i++) {
-                const country = countries[i];
-                const countryCard = document.createElement('div');
-                countryCard.className = 'country-card';
-                countryCard.innerHTML = `<img src="/images/${country}.jpg" alt="${country}"><span>${country}</span>`;
-                countryContainer.appendChild(countryCard);
+                try {
+                    const country = countries[i];
+                    const countryCard = document.createElement('div');
+                    countryCard.className = 'country-card';
+                    countryCard.innerHTML = `<img src="${country.thumbnail}" alt="${country.name}"><span>${country.name}</span>`;
+                    countryCard.onclick = () => {
+                        window.location.href = `/tours/${country.name}`;
+                    }
+                    countryContainer.appendChild(countryCard);
+                } catch (error) {
+
+                }
             }
         });
     }

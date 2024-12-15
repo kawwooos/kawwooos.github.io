@@ -97,9 +97,9 @@
 
                             let body = doc.querySelector('body');
 
-                            body.querySelector('h1.title').innerText = data.name;
-                            body.querySelector('p.description').innerText = data.description;
-                            body.querySelector('p.price').innerText = data.price;
+                            body.querySelector('h1.title').innerText = data.TourName;
+                            body.querySelector('p.description').innerText = data.TourDescription;
+                            body.querySelector('p.price').innerText = data.BudgetFrom + ' to ' + data.BudgetTo;
 
                             body.querySelector('.add-to-travel-list').disabled = true;
 

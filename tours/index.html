@@ -36,10 +36,9 @@
             <div class="container">
                 <div class="filter">
                     <label for="filter">Filter:</label>
-                    <select name="filter" id="filter">
+                    <select name="filter" id="filter" onchange="filterCountries()">
                         <option value="most-visited">Alphabetical</option>
                         <option value="least-visited">Most Visited</option>
-                        <option value="newest">By Region</option>
                         <option value="oldest">By Budget</option>
                     </select>
                 </div>
@@ -54,27 +53,12 @@
                         </div>
                     </div>
                     <div class="search-bar">
-                        <input type="text" placeholder="Search Country">
-                        <button type="button">Search</button>
+                        <input type="text" placeholder="Search Country" id="search-country">
+                        <button type="button" onclick="searchCountry()">Search</button>
                     </div>
                 </div>
                 <div class="country-list">
-                    <div class="country-card">
-                        <img src="/assets/images/france.png" alt="">
-                        <span>France</span>
-                    </div>
-                    <div class="country-card">
-                        <img src="/assets/images/spain.png" alt="">
-                        <span>Spain</span>
-                    </div>
-                    <div class="country-card">
-                        <img src="/assets/images/usa.png" alt="">
-                        <span>United States</span>
-                    </div>
-                    <div class="country-card">
-                        <img src="/assets/images/china.png" alt="">
-                        <span>China</span>
-                    </div>
+
                 </div>
             </div>
         </section>
