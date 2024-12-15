@@ -799,3 +799,11 @@ div.recommended-tours .tour-list .tour-card > *:nth-child(-n+3)::after {
     height: 50px;
     background-color: #ffffff44;
 }
+
+
+@media screen and (max-width: 800px) {
+    main section div div.main-content {
+        flex-direction: column;
+        gap: 2rem;
+    }
+}
