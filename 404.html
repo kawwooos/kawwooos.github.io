@@ -42,7 +42,7 @@
                             body.querySelector('img').src = data.image;
 
                             //pins
-                            let pins = body.querySelector('div.pins');
+                            let pins = body.querySelector('div.country-map');
                             data.tours.forEach(tour => {
                                 let a = document.createElement('a');
                                 a.href = `/tours/${country}/${tour["name"]}`;
