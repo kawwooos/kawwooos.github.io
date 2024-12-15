@@ -60,6 +60,7 @@
                             });
 
                             bodydoc.querySelector('h1.title').innerText = data.name;
+                            bodydoc.querySelector('h1.title').style.backgroundImage = `url(${data.image || 'https://res.cloudinary.com/dos4lbpez/image/upload/v1734241101/francepng_js11pz.png'})`;
                             bodydoc.querySelector('p.description').innerText = data.description;
 
                             document.body.innerHTML = bodydoc.innerHTML;
