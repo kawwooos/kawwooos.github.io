@@ -37,14 +37,14 @@
                 <div class="filter">
                     <label for="filter">Filter:</label>
                     <select name="filter" id="filter" onchange="filterCountries()">
-                        <option value="most-visited">Alphabetical</option>
-                        <option value="least-visited">Most Visited</option>
-                        <option value="oldest">By Budget</option>
+                        <option value="alphabetical">Alphabetical</option>
+                        <option value="most-visited">Most Visited</option>
+                        <option value="budget">By Budget</option>
                     </select>
                 </div>
                 <div class="search">
                     <div id="country-filter">
-                        <a href="">See All Countries</a>
+                        <a href="" onclick="seeallcountries(event)" id="seeallcountrybtn">See All Countries</a>
                         <div style="display: none;">
                             <button></button>
                             <span>$</span>

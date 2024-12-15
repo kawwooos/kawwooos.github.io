@@ -1,14 +1,141 @@
 const currentURL = window.location.href;
 const path = window.location.pathname;
 let paths = path.split('/');
-let apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
+// let apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
 // let apilink = "https://wild-mouse-612a.princeojeda52.workers.dev/";
-// let apilink = "http://127.0.0.1:8787/";
+let apilink = "http://127.0.0.1:8787/";
 
 let recommendedToursList = []
 let allCountriesList = []
 
-const filterCountries = (searchValue) => {}
+const showDescrEditor = () => {
+    const hiddeneditor = document.createElement('div');
+    hiddeneditor.className = 'hidden-editor';
+    hiddeneditor.innerHTML = `<textarea id="profileDescEditor" placeholder="Enter your profile description here..."></textarea><button onclick="saveprofiledesc()">Save</button>`;
+    document.getElementsByTagName('main')[0].appendChild(hiddeneditor);
+
+    const closerdiv = document.createElement('div');
+    closerdiv.className = 'closerdiv3';
+    closerdiv.onclick = () => {
+        hiddeneditor.remove();
+        closerdiv.remove();
+    };
+    closerdiv.style = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 0;';
+    closerdiv.style.display = 'block';
+    document.getElementsByTagName('main')[0].appendChild(closerdiv);
+}
+
+const saveprofiledesc = async () => {
+    const profileDescEditor = document.getElementById('profileDescEditor');
+    const profileDesc = profileDescEditor.value;
+
+    // save to cookie profile description
+    document.cookie = `profile_description=${profileDesc}; path=/`;
+
+    window.location.href = '/profile';
+}
+
+const seeallcountries = (e) => {
+    e.preventDefault();
+
+    const seeallcountrybtn = document.getElementById('seeallcountrybtn');
+    seeallcountrybtn.style.display = 'none';
+
+    const countryContainer = document.getElementsByClassName('country-list')[0];
+    countryContainer.innerHTML = '';
+
+    for (let i = 0; i < allCountriesList.length; i++) {
+        try {
+            const country = allCountriesList[i];
+            const countryCard = document.createElement('div');
+            countryCard.className = 'country-card';
+            countryCard.innerHTML = `<img src="${country.thumbnail}" alt="${country.name}"><span>${country.name}</span>`;
+            countryCard.onclick = () => {
+                window.location.href = `/tours/${country.name}`;
+            }
+            countryContainer.appendChild(countryCard);
+        } catch (error) {
+
+        }
+    }
+
+    countryContainer.classList.add('all-countries');
+
+}
+
+const filterCountries = () => {
+    const searchInput = document.getElementById('search-country');
+    const searchValue = searchInput.value.toLowerCase();
+    const countryContainer = document.getElementsByClassName('country-list')[0];
+    const countryCards = countryContainer.getElementsByClassName('country-card');
+
+    const filter = document.getElementById('filter');
+    const filterValue = filter.value.toLowerCase();
+
+    if (filterValue === 'most-visited') {
+
+        console.log(allCountriesList);
+        const sortedCountries = allCountriesList.sort((a, b) => b.visits - a.visits);
+
+        countryContainer.innerHTML = '';
+
+        for (let i = 0; i < sortedCountries.length; i++) {
+            try {
+                const country = sortedCountries[i];
+                const countryCard = document.createElement('div');
+                countryCard.className = 'country-card';
+                countryCard.innerHTML = `<img src="${country.thumbnail}" alt="${country.name}"><span>${country.name}</span>`;
+                countryCard.onclick = () => {
+                    window.location.href = `/tours/${country.name}`;
+                }
+                countryContainer.appendChild(countryCard);
+            } catch (error) {
+
+            }
+        }
+
+    } else if (filterValue === 'alphabetical') {
+
+        const sortedCountries = allCountriesList.sort((a, b) => a.name.localeCompare(b.name));
+
+        countryContainer.innerHTML = '';
+
+        for (let i = 0; i < sortedCountries.length; i++) {
+            try {
+                const country = sortedCountries[i];
+                const countryCard = document.createElement('div');
+                countryCard.className = 'country-card';
+                countryCard.innerHTML = `<img src="${country.thumbnail}" alt="${country.name}"><span>${country.name}</span>`;
+                countryCard.onclick = () => {
+                    window.location.href = `/tours/${country.name}`;
+                }
+                countryContainer.appendChild(countryCard);
+            } catch (error) {
+
+            }
+        }
+    } else if (filterValue === 'budget') {
+        const sortedCountries = allCountriesList.sort((a, b) => a.budget - b.budget);
+
+        countryContainer.innerHTML = '';
+
+        for (let i = 0; i < sortedCountries.length; i++) {
+            try {
+                const country = sortedCountries[i];
+                const countryCard = document.createElement('div');
+                countryCard.className = 'country-card';
+                countryCard.innerHTML = `<img src="${country.thumbnail}" alt="${country.name}"><span>${country.name}</span>`;
+                countryCard.onclick = () => {
+                    window.location.href = `/tours/${country.name}`;
+                }
+                countryContainer.appendChild(countryCard);
+            } catch (error) {
+
+            }
+        }
+    }
+
+}
 
 const searchCountry = async () => {
 
@@ -198,6 +325,7 @@ if (paths[1] === "" || paths[1] === "index.html") {
                 const card = document.createElement('div');
                 card.className = 'country-card';
                 card.onclick = () => {
+
                     const recommendedTourDiv = document.createElement('div');
                     recommendedTourDiv.className = 'recommended-tours';
                     const h3 = document.createElement('h3');
@@ -221,7 +349,8 @@ if (paths[1] === "" || paths[1] === "index.html") {
                         const p = document.createElement('p');
                         p.innerText = truncateText(tour.description, 50);
                         const span2 = document.createElement('span');
-                        span2.innerText = tour.price;
+                        console.log(tours);
+                        span2.innerText = tour.ratings;
                         tourCard.appendChild(img);
                         tourCard.appendChild(span);
                         tourCard.appendChild(p);
@@ -230,6 +359,17 @@ if (paths[1] === "" || paths[1] === "index.html") {
                     }
 
                     recommendedTourDiv.appendChild(tourlistdiv);
+                    document.getElementsByTagName('main')[0].appendChild(recommendedTourDiv);
+
+                    const closerdiv = document.createElement('div');
+                    closerdiv.className = 'closerdiv2';
+                    closerdiv.onclick = () => {
+                        recommendedTourDiv.remove();
+                        closerdiv.remove();
+                    };
+                    closerdiv.style = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 0;';
+                    closerdiv.style.display = 'block';
+                    document.getElementsByTagName('main')[0].appendChild(closerdiv);
 
                 }
                 const img = document.createElement('img');
@@ -267,7 +407,13 @@ if (paths[1] === "tours") {
 
         getAllCountries().then(countries => {
             const countryContainer = document.getElementsByClassName('country-list')[0];
-            for (let i = 0; i < countries.length; i++) {
+
+            let maxlength = 10;
+            if (countries.length < 10) {
+                maxlength = countries.length;
+            }
+
+            for (let i = 0; i < maxlength; i++) {
                 try {
                     const country = countries[i];
                     const countryCard = document.createElement('div');
@@ -345,9 +491,31 @@ window.onload = () => {
                         const parser = new DOMParser();
                         const doc = parser.parseFromString(data, 'text/html');
                         const profileContainer = doc.getElementsByClassName('signed')[0];
-                        profileContainer.querySelector('.profile-description-text').innerText = profile_description;
-                        profileContainer.querySelector('.user-visits-description').innerText = user_visits_description;
+                        console.log(profileContainer.querySelector('.profile-description-text'));
+                        profileContainer.querySelector('.profile-description-text').innerText = profile_description || document.cookie.split(';').find(cookie => cookie.includes('profile_description')).split('=')[1] || 'No description';
+                        profileContainer.querySelector('.user-visits-description').innerText = user_visits_description || 'No description';
                         profileContainer.querySelector('.profile-name').innerText = fullname;
+
+
+                        profileContainer.querySelector('.profile-description').addEventListener('click', () => {
+                            console.log('edit profile description');
+                            const hiddeneditor = document.createElement('div');
+                            hiddeneditor.className = 'hidden-editor';
+                            hiddeneditor.innerHTML = `<textarea id="profileDescEditor" placeholder="Enter your profile description here..."></textarea><button onclick="saveprofiledesc()">Save</button>`;
+                            document.getElementsByTagName('main')[0].appendChild(hiddeneditor);
+
+                            const closerdiv = document.createElement('div');
+                            closerdiv.className = 'closerdiv3';
+                            closerdiv.onclick = () => {
+                                hiddeneditor.remove();
+                                closerdiv.remove();
+                            };
+                            closerdiv.style = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 0;';
+                            closerdiv.style.display = 'block';
+                            document.getElementsByTagName('main')[0].appendChild(closerdiv);
+
+                        });
+
 
 
                         if (profileContainer) {

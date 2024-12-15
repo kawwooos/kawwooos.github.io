@@ -353,6 +353,11 @@ main section div .profile-container .profile div.profile-info p {
 
 main section div .profile-container .profile-description {
     width: 60%;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    height: 100%;
+    width: 100%;
 }
 
 main section div .profile-container .profile-description p {
@@ -810,6 +815,55 @@ div.recommended-tours .tour-list .tour-card > *:nth-child(-n+3)::after {
     width: 1px;
     height: 50px;
     background-color: #ffffff44;
+}
+
+div.hidden-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: linear-gradient(140deg, #142c47 0%, #000 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    border-radius: 10px;
+    padding: 2rem;
+    border: 2px solid #fff;
+    z-index: 1;
+    width: 90%;
+    max-width: 1200px;
+}
+
+div.hidden-editor.hide {
+    display: none;
+}
+
+div.hidden-editor textarea {
+    border: none;
+    outline: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    background-color: #ffffffb2;
+    width: 100%;
+
+    height: 200px;
+    resize: none;
+}
+
+div.hidden-editor button {
+    background-color: #00F911;
+    color: #000;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    width: min(200px, 90%);
+    margin: 1rem;
 }
 
 
