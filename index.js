@@ -1,7 +1,253 @@
 const currentURL = window.location.href;
 const path = window.location.pathname;
 let paths = path.split('/');
+// const apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
+// const apilink = "https://wild-mouse-612a.princeojeda52.workers.dev/";
+const apilink = "http://127.0.0.1:8787/";
 
+let recommendedToursList = []
+
+const addToTravelList = async () => {
+    // current url is /tours/{country}/{tour}
+    const country = decodeURIComponent(paths[2]);
+    const tour = decodeURIComponent(paths[3]);
+    const token = document.cookie.split(';').find(cookie => cookie.includes('token')).split('=')[1];
+
+    try {
+        const response = await fetch(apilink + 'api/add-to-travel-list', {
+            mode: 'cors',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token, country, tour }),
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            if (responseData.success) {
+                alert('Added to travel list');
+            } else {
+                alert('Failed to add to travel list');
+            }
+        } else {
+            alert('Failed to add to travel list');
+        }
+    } catch (error) {
+        console.error('Error with POST request:', error);
+        alert('Failed to add to travel list');
+    }
+}
+
+
+const getAllCountries = async () => {
+    try {
+        const response = await fetch(apilink + 'api/countries', {
+            mode: 'cors',
+            method: 'GET',
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            return responseData;
+        } else {
+            console.error('Failed to get countries');
+        }
+    } catch (error) {
+        console.error('Error with GET request:', error);
+    }
+}
+
+const getTopTenCountries = async () => {
+    try {
+        const response = await fetch(apilink + 'api/top-ten-countries', {
+            mode: 'cors',
+            method: 'GET',
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            return responseData;
+        } else {
+            console.error('Failed to get top ten countries');
+        }
+    } catch (error) {
+        console.error('Error with GET request:', error);
+    }
+}
+
+const getRecommendedTours = async () => {
+    try {
+        const response = await fetch(apilink + `api/recommended-tours`, {
+            mode: 'cors',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            return responseData;
+        } else {
+            console.error('Failed to get recommended tours');
+        }
+    } catch (error) {
+        console.error('Error with GET request:', error);
+    }
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
+const loggedIn = () => {
+    let cookies = document.cookie.split(';');
+    let cookieObj = {};
+    cookies.forEach(cookie => {
+        let [key, value] = cookie.split('=');
+        try {
+            cookieObj[key.trim()] = value.trim();
+        } catch (error) {
+        }
+    });
+
+    if (cookieObj.token) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function truncateText(text, wordLimit) {
+    const words = text.split(' ');
+    if (words.length > wordLimit) {
+        return words.slice(0, wordLimit).join(' ') + '...';
+    }
+    return text;
+}
+
+if (paths[1] === "" || paths[1] === "index.html") {
+
+    getTopTenCountries().then(countries => {
+        document.getElementsByClassName('country-list')[0].innerHTML = '';
+        for (let i = 0; i < countries.length; i++) {
+            const country = countries[i];
+            const countryCard = document.createElement('div');
+            countryCard.className = 'country-card';
+            countryCard.innerHTML = `<img src="${country.thumbnail}" alt="${country.name}"><span>${capitalizeFirstLetter(country.name)}</span>`;
+            document.getElementsByClassName('country-list')[0].appendChild(countryCard);
+
+            try {
+                countryCard.addEventListener('click', () => {
+                    const country = countryCard.getElementsByTagName('span')[0].innerText;
+                    window.location.href = `/tours/${country}`;
+                });
+            } catch (error) {
+
+            }
+        }
+    });
+
+    if (loggedIn()) {
+        // recommended tours
+        getRecommendedTours().then(tours => {
+            // const recommendedToursContainer = document.getElementsByClassName('recommended-tours')[0];
+            const section = document.createElement('section');
+            const container = document.createElement('div');
+            container.className = 'container';
+            const h2 = document.createElement('h2');
+            h2.innerText = 'Recommended Tours';
+            const countryList = document.createElement('div');
+            countryList.className = 'country-list';
+
+            recommendedToursList = tours;
+
+            for (let i = 0; i < tours.length; i++) {
+                const card = document.createElement('div');
+                card.className = 'country-card';
+                card.onclick = () => {
+                    const recommendedTourDiv = document.createElement('div');
+                    recommendedTourDiv.className = 'recommended-tours';
+                    const h3 = document.createElement('h3');
+                    h3.innerText = "Recommended Tours in " + tours[i].name;
+                    recommendedTourDiv.appendChild(h3);
+
+                    const tourlistdiv = document.createElement('div');
+                    tourlistdiv.className = 'tour-list';
+                    for (let j = 0; j < tours[i].tours.length; j++) {
+                        const tour = tours[i].tours[j];
+                        const tourCard = document.createElement('div');
+                        tourCard.className = 'tour-card';
+                        tourCard.onclick = () => {
+                            window.location.href = `/tours/${tours[i].name}/${tour.name}`;
+                        }
+                        const img = document.createElement('img');
+                        img.src = tour.thumbnail;
+                        img.alt = tour.name;
+                        const span = document.createElement('span');
+                        span.innerText = tour.name;
+                        const p = document.createElement('p');
+                        p.innerText = truncateText(tour.description, 50);
+                        const span2 = document.createElement('span');
+                        span2.innerText = tour.price;
+                        tourCard.appendChild(img);
+                        tourCard.appendChild(span);
+                        tourCard.appendChild(p);
+                        tourCard.appendChild(span2);
+                        tourlistdiv.appendChild(tourCard);
+                    }
+
+                    recommendedTourDiv.appendChild(tourlistdiv);
+
+                }
+                const img = document.createElement('img');
+                img.src = tours[i].thumbnail;
+                img.alt = tours[i].name;
+                const span = document.createElement('span');
+                span.innerText = tours[i].name;
+                card.appendChild(img);
+                card.appendChild(span);
+            }
+
+            container.appendChild(h2);
+            container.appendChild(countryList);
+            section.appendChild(container);
+
+            if (recommendedToursList.length > 0) {
+                document.getElementsByTagName('main')[0].appendChild(section);
+            }
+        });
+    }
+
+
+}
+
+if (paths[1] === "tours") {
+
+    let country = '';
+    try {
+        country = paths[2];
+    } catch (error) {
+        country = '';
+    }
+
+    if (!country) {
+
+        getAllCountries().then(countries => {
+            const countryContainer = document.getElementsByClassName('country-list')[0];
+            for (let i = 0; i < countries.length; i++) {
+                const country = countries[i];
+                const countryCard = document.createElement('div');
+                countryCard.className = 'country-card';
+                countryCard.innerHTML = `<img src="/images/${country}.jpg" alt="${country}"><span>${country}</span>`;
+                countryContainer.appendChild(countryCard);
+            }
+        });
+    }
+
+
+}
 
 window.onload = () => {
 
@@ -31,35 +277,72 @@ window.onload = () => {
     if (cookieObj.token) {
         hideloginandregister();
 
+    }
 
-        if (currentURL.includes("profile")) {
-            hideprofile();
-            fetch('/profile/profile2.html', {
-                method: 'GET',
-            }).then((res) => {
-                res.text().then((data) => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(data, 'text/html');
-                    const profileContainer = doc.getElementsByClassName('signed')[0];
 
-                    if (profileContainer) {
-                        const section = document.createElement('section');
-                        section.innerHTML = profileContainer.innerHTML;
-                        section.className = 'signed';
+    const setProfile = async (token) => {
+        try {
+            const response = await fetch(apilink + 'api/profile', {
+                mode: 'cors',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token }),
+            });
 
-                        document.getElementsByTagName('main')[0].appendChild(section);
-                    } else {
-                        console.error('Profile container not found in the fetched HTML.');
-                    }
+            if (response.ok) {
+
+                let responseData = await response.json();
+                responseData = responseData[0];
+                const fullname = responseData.fullname;
+                const profile_description = responseData.profile_description;
+                const user_visits_description = responseData.user_visits_description;
+
+                hideprofile();
+                fetch('/profile/profile2.html', {
+                    method: 'GET',
+                }).then((res) => {
+                    res.text().then((data) => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(data, 'text/html');
+                        const profileContainer = doc.getElementsByClassName('signed')[0];
+                        profileContainer.querySelector('.profile-description-text').innerText = profile_description;
+                        profileContainer.querySelector('.user-visits-description').innerText = user_visits_description;
+                        profileContainer.querySelector('.profile-name').innerText = fullname;
+
+
+                        if (profileContainer) {
+                            const section = document.createElement('section');
+                            section.innerHTML = profileContainer.innerHTML;
+                            section.className = 'signed';
+
+                            document.getElementsByTagName('main')[0].appendChild(section);
+                        } else {
+                            console.error('Profile container not found in the fetched HTML.');
+                        }
+                    })
                 })
-            })
+            }
+        } catch (error) {
+            console.error('Error with POST request:', error);
         }
+
+
+
 
     }
 
-    // const apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
-    // const apilink = "https://wild-mouse-612a.princeojeda52.workers.dev/";
-    const apilink = "http://127.0.0.1:8787/";
+    if (paths[1] === "profile") {
+
+        if (cookieObj.token) {
+            setProfile(cookieObj.token);
+        } else {
+            cookieObj.token = '';
+            window.location.reload();
+        }
+
+    }
 
     fetch('/login/', {
         method: 'GET',
@@ -125,36 +408,6 @@ window.onload = () => {
                         console.error('Error with POST request:', error);
                     }
 
-                    // await fetch(apilink + '', {
-                    //     mode: 'no-cors', // Change to 'cors' if your server supports CORS
-                    //     method: 'POST',
-                    //     headers: {
-                    //         'Content-Type': 'application/json',
-                    //     },
-                    //     body: JSON.stringify({ username, password }),
-                    // }).then((res) => {
-                    //     console.log(res);
-                    //     if (res.status === 200) {
-                    //         window.location.href = '/home';
-                    //     } else {
-                    //         alert('Invalid credentials');
-                    //     }
-                    // })
-
-                    // const xhr = new XMLHttpRequest();
-                    // xhr.open('POST', apilink + 'api/login', true);
-                    // xhr.setRequestHeader('Content-Type', 'application/json');
-                    // xhr.onreadystatechange = () => {
-                    //     if (xhr.readyState === 4) {
-                    //         if (xhr.status === 200) {
-                    //             window.location.href = '/home';
-                    //         } else {
-                    //             alert('Invalid credentials');
-                    //         }
-                    //     }
-                    // }
-                    // xhr.send(JSON.stringify({ username, password }))
-
                 });
 
             } else {
@@ -200,21 +453,36 @@ window.onload = () => {
                     const name = signupForm.name.value;
                     const password = signupForm.password.value;
 
-                    await fetch(apilink + 'api/register', {
-                        mode: 'no-cors',
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ cred1, username, name, password }),
-                    }).then((res) => {
-                        console.log(res);
-                        if (res.status === 200) {
-                            window.location.href = '/';
+                    try {
+                        const response = await fetch(apilink + 'api/register', {
+                            mode: 'cors',
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ cred1, username, name, password }),
+                        })
+
+                        if (response.ok) {
+                            const responseData = await response.json();
+                            if (responseData.token) {
+                                const token = responseData.token;
+                                const expirationDate = responseData.expiration;
+                                document.cookie = `token=${token}; expires=${expirationDate}; path=/`;
+
+                                window.location.href = '/';
+                            } else {
+                                alert('Failed to register');
+                            }
                         } else {
-                            alert('Invalid credentials');
+                            alert('Failed to register');
                         }
-                    })
+                    } catch (error) {
+                        console.error('Error with POST request:', error);
+                        alert('Failed to register');
+                    }
+
+
                 });
             } else {
                 console.error('Signup form container not found in the fetched HTML.');
