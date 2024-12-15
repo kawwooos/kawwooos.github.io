@@ -229,7 +229,7 @@ main section div .main-content .country-map .pin {
 
 main section div .main-content .country-map img {
     height: 90%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 10px;
 }
 
