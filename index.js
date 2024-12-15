@@ -1,9 +1,9 @@
 const currentURL = window.location.href;
 const path = window.location.pathname;
 let paths = path.split('/');
-const apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
+// const apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
 // const apilink = "https://wild-mouse-612a.princeojeda52.workers.dev/";
-// const apilink = "http://127.0.0.1:8787/";
+const apilink = "http://127.0.0.1:8787/";
 
 let recommendedToursList = []
 
@@ -439,9 +439,13 @@ window.onload = () => {
                 closerdiv.style = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 0;';
                 closerdiv.style.display = 'none';
 
-                document.getElementsByTagName('main')[0].appendChild(div);
-                document.getElementsByTagName('main')[0].appendChild(closerdiv);
+                try {
+                    document.getElementsByTagName('main')[0].appendChild(div);
+                    document.getElementsByTagName('main')[0].appendChild(closerdiv);
 
+                } catch (error) {
+                    return;
+                }
                 const signupForm = document.getElementById('signupForm');
                 const signupFormBTN = document.getElementById('signupFormBTN');
 
