@@ -367,9 +367,13 @@ window.onload = () => {
                 closerdiv.style = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 0;';
                 closerdiv.style.display = 'none';
 
-                document.getElementsByTagName('main')[0].appendChild(div);
-                document.getElementsByTagName('main')[0].appendChild(closerdiv);
+                try {
+                    document.getElementsByTagName('main')[0].appendChild(div);
+                    document.getElementsByTagName('main')[0].appendChild(closerdiv);
 
+                } catch (error) {
+                    return;
+                }
                 const loginFormBTN = document.getElementById('loginFormBTN');
                 const loginForm = document.getElementById('loginForm');
 
