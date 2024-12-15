@@ -45,6 +45,10 @@
 
                             // bodydoc.querySelector('img').src = data.image;
 
+                            const img = document.createElement('img');
+                            img.src = data.image;
+                            bodydoc.querySelector('div.country-map').appendChild(img);
+
                             //pins
                             data.tours.forEach(tour => {
                                 let a = document.createElement('a');
