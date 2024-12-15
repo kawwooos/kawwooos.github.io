@@ -806,4 +806,8 @@ div.recommended-tours .tour-list .tour-card > *:nth-child(-n+3)::after {
         flex-direction: column;
         gap: 2rem;
     }
+
+    header {
+        overflow: auto;
+    }
 }
