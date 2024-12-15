@@ -37,12 +37,12 @@
                             const parser = new DOMParser();
                             const doc = parser.parseFromString(html, 'text/html');
 
-                            let body = doc.querySelector('body');
+                            let bodydoc = doc.querySelector('body');
 
-                            body.querySelector('img').src = data.image;
+                            // bodydoc.querySelector('img').src = data.image;
 
                             //pins
-                            let pins = body.querySelector('div.country-map');
+                            let pins = bodydoc.querySelector('div.country-map');
                             data.tours.forEach(tour => {
                                 let a = document.createElement('a');
                                 a.href = `/tours/${country}/${tour["name"]}`;
