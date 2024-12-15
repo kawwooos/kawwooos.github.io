@@ -101,6 +101,8 @@
 
                             let body = doc.querySelector('body');
 
+                            body.querySelector('country-map img').src = data.TourImage;
+
                             body.querySelector('h1.title').innerText = data.TourName;
                             body.querySelector('p.description').innerText = data.TourDescription;
                             body.querySelector('span.price').innerText = data.BudgetFrom + ' to ' + data.BudgetTo;
