@@ -589,7 +589,7 @@ window.onload = () => {
                                 window.location.href = `/tours/${tour.country}/${tour.name}`;
                             }
                             const img = document.createElement('img');
-                            img.src = tour.tour_thumbnail;
+                            img.src = tour.tour_thumbnail || 'https://res.cloudinary.com/dos4lbpez/image/upload/v1734365738/travelbuddy/country/gzwblzck82jkwyexxqjl.jpg';
                             img.alt = tour.tour_name;
                             const span = document.createElement('span');
                             span.innerText = tour.tour_name;
