@@ -854,6 +854,7 @@ div .tour-list {
     gap: 1rem;
     width: auto;
     overflow: auto;
+    width: 100%;
 }
 
 div .tour-list::-webkit-scrollbar {
@@ -882,7 +883,7 @@ div .tour-list .tour-card>* {
     text-overflow: ellipsis;
 }
 
-div .tour-list .tour-card>*:nth-child(-n+3)::after {
+div.recommended-tours .tour-list .tour-card>*:nth-child(-n+3)::after {
     content: "";
     display: block;
     width: 1px;
