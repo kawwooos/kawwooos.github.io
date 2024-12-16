@@ -1,9 +1,8 @@
 const currentURL = window.location.href;
 const path = window.location.pathname;
 let paths = path.split('/');
-// let apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
-// let apilink = "https://wild-mouse-612a.princeojeda52.workers.dev/";
-let apilink = "http://127.0.0.1:8787/";
+let apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
+// let apilink = "http://127.0.0.1:8787/";
 
 let recommendedToursList = []
 let allCountriesList = []
