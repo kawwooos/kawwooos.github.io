@@ -507,7 +507,7 @@ window.onload = () => {
         try {
             headerButtons.style.display = 'none';
         } catch (error) {
-            
+
         }
 
     }
@@ -649,7 +649,8 @@ window.onload = () => {
             setProfile(cookieObj.token);
         } else {
             cookieObj.token = '';
-            window.location.reload();
+            const loading = document.getElementsByClassName('loading')[0];
+            loading.style.display = 'none';
         }
 
     }
