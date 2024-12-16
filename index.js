@@ -575,7 +575,7 @@ window.onload = () => {
                         profileContainer.querySelector('.profile-name').innerText = fullname;
                         const travelList = responseData.tours;
 
-                        if (!travelList.length === 0) {
+                        if (!travelList) {
 
                             profileContainer.querySelector('.tour-list').innerHTML = '';
 
