@@ -238,7 +238,7 @@ const addToTravelList = async () => {
 
         if (response.ok) {
             const responseData = await response.json();
-            if (responseData.success) {
+            if (responseData.status === 200) {
                 alert('Added to travel list');
             } else {
                 alert('Failed to add to travel list');
@@ -504,7 +504,11 @@ window.onload = () => {
     const hideloginandregister = () => {
         const headerButtons = document.getElementsByClassName('header-buttons')[0];
 
-        headerButtons.style.display = 'none';
+        try {
+            headerButtons.style.display = 'none';
+        } catch (error) {
+            
+        }
 
     }
 
