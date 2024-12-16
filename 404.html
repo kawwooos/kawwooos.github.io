@@ -70,9 +70,9 @@
 
                             let bodydoc = doc.querySelector('body');
                             if (isLoggedIn()) {
-                                bodydoc.querySelector('.header-buttons').style.display = 'block';
-                            } else {
                                 bodydoc.querySelector('.header-buttons').style.display = 'none';
+                            } else {
+                                bodydoc.querySelector('.header-buttons').style.display = 'flex';
                             }
 
                             // bodydoc.querySelector('img').src = data.image;
@@ -135,9 +135,9 @@
 
 
                             if (isLoggedIn()) {
-                                body.querySelector('.header-buttons').style.display = 'block';
-                            } else {
                                 body.querySelector('.header-buttons').style.display = 'none';
+                            } else {
+                                body.querySelector('.header-buttons').style.display = 'flex';
                             }
 
                             body.querySelector('.country-map img').src = data.TourImage || 'https://res.cloudinary.com/dos4lbpez/image/upload/v1734269786/licensed-image_llne70.jpg';
