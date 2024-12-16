@@ -145,9 +145,9 @@
                             body.querySelector('h1.title').innerText = data.TourName;
                             let bgimage = data.flag;
                             if (bgimage) {
-                                bodydoc.querySelector('h1.title').style.backgroundImage = `url(${bgimage})`;
+                                body.querySelector('h1.title').style.backgroundImage = `url(${bgimage})`;
                             } else {
-                                bodydoc.querySelector('h1.title').style.backgroundImage = `white`;
+                                body.querySelector('h1.title').style.backgroundImage = `white`;
                             }
                             body.querySelector('p.description').innerText = data.TourDescription;
                             body.querySelector('span.price').innerText = data.BudgetFrom + ' to ' + data.BudgetTo;
