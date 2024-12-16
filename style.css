@@ -475,6 +475,7 @@ main section div .profile-title {
     font-size: 2rem;
     font-weight: 700;
     color: #00F911;
+    width: 100%;
 }
 
 main section div .profile-myvisits p {
@@ -489,6 +490,7 @@ main section div .profile-myalbums .album-list {
     gap: 1rem;
     width: auto;
     overflow-x: auto;
+    width: 100%;
 }
 
 main section div .profile-myalbums .album-list::-webkit-scrollbar {
@@ -860,8 +862,6 @@ div .tour-list {
 div .tour-list::-webkit-scrollbar {
     display: none;
 }
-
-
 
 div .tour-list .tour-card {
     display: flex;
