@@ -1,9 +1,9 @@
 const currentURL = window.location.href;
 const path = window.location.pathname;
 let paths = path.split('/');
-let apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
+// let apilink = "https://purple-cherry-974e.princeojeda52.workers.dev/";
 // let apilink = "https://wild-mouse-612a.princeojeda52.workers.dev/";
-// let apilink = "http://127.0.0.1:8787/";
+let apilink = "http://127.0.0.1:8787/";
 
 let recommendedToursList = []
 let allCountriesList = []
@@ -63,6 +63,30 @@ const seeallcountries = (e) => {
 
 }
 
+const filterBudget = () => {
+    const budget = document.getElementById('budget').value;
+    const countryContainer = document.getElementsByClassName('country-list')[0];
+    countryContainer.innerHTML = '';
+
+    for (let i = 0; i < allCountriesList.length; i++) {
+        try {
+            const country = allCountriesList[i];
+            const countryCard = document.createElement('div');
+            const countryBudget = Intl.NumberFormat('en-PH', { maximumSignificantDigits: 3 }).format(country.budget);
+            if (countryBudget == budget) {
+                countryCard.className = 'country-card';
+                countryCard.innerHTML = `<img src="${country.thumbnail}" alt="${country.name}"><span>${country.name}</span>`;
+                countryCard.onclick = () => {
+                    window.location.href = `/tours/${country.name}`;
+                }
+                countryContainer.appendChild(countryCard);
+            }
+        } catch (error) {
+
+        }
+    }
+}
+
 const filterCountries = () => {
     const searchInput = document.getElementById('search-country');
     const searchValue = searchInput.value.toLowerCase();
@@ -73,6 +97,8 @@ const filterCountries = () => {
     const filterValue = filter.value.toLowerCase();
 
     if (filterValue === 'most-visited') {
+        const budgetFilter = document.getElementById('budget-filter');
+        budgetFilter.classList.add('hidden');
 
         console.log(allCountriesList);
         const sortedCountries = allCountriesList.sort((a, b) => b.visits - a.visits);
@@ -95,6 +121,8 @@ const filterCountries = () => {
         }
 
     } else if (filterValue === 'alphabetical') {
+        const budgetFilter = document.getElementById('budget-filter');
+        budgetFilter.classList.add('hidden');
 
         const sortedCountries = allCountriesList.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -115,20 +143,47 @@ const filterCountries = () => {
             }
         }
     } else if (filterValue === 'budget') {
+
+        const budgetFilter = document.getElementById('budget-filter');
+        budgetFilter.classList.remove('hidden');
+
         const sortedCountries = allCountriesList.sort((a, b) => a.budget - b.budget);
 
         countryContainer.innerHTML = '';
+
+        let budgets = []
 
         for (let i = 0; i < sortedCountries.length; i++) {
             try {
                 const country = sortedCountries[i];
                 const countryCard = document.createElement('div');
-                countryCard.className = 'country-card';
-                countryCard.innerHTML = `<img src="${country.thumbnail}" alt="${country.name}"><span>${country.name}</span>`;
-                countryCard.onclick = () => {
-                    window.location.href = `/tours/${country.name}`;
+                const budget = Intl.NumberFormat('en-PH', { maximumSignificantDigits: 3 }).format(country.budget);
+                if (!budgets.includes(budget)) {
+                    budgets.push(budget);
+                    const budgetOption = document.createElement('option');
+                    budgetOption.value = budget;
+                    budgetOption.innerText = budget;
+                    document.getElementById("budget").appendChild(budgetOption);
                 }
-                countryContainer.appendChild(countryCard);
+            } catch (error) {
+
+            }
+        }
+
+        for (let i = 0; i < sortedCountries.length; i++) {
+            try {
+                const budget = Intl.NumberFormat('en-PH', { maximumSignificantDigits: 3 }).format(sortedCountries[i].budget);
+
+                if (budget == document.getElementById('budget').value) {
+                    const country = sortedCountries[i];
+                    const countryCard = document.createElement('div');
+                    countryCard.className = 'country-card';
+                    countryCard.innerHTML = `<img src="${country.thumbnail}" alt="${country.name}"><span>${country.name}</span>`;
+                    countryCard.onclick = () => {
+                        window.location.href = `/tours/${country.name}`;
+                    }
+                    countryContainer.appendChild(countryCard);
+                }
             } catch (error) {
 
             }
@@ -137,7 +192,8 @@ const filterCountries = () => {
 
 }
 
-const searchCountry = async () => {
+const searchCountry = async (e) => {
+    e.preventDefault();
 
     const searchInput = document.getElementById('search-country');
     const searchValue = searchInput.value.toLowerCase();
@@ -305,6 +361,11 @@ if (paths[1] === "" || paths[1] === "index.html") {
 
             }
         }
+
+        if (!loggedIn()) {
+            const loading = document.getElementsByClassName('loading')[0];
+            loading.style.display = 'none';
+        }
     });
 
     if (loggedIn()) {
@@ -389,8 +450,11 @@ if (paths[1] === "" || paths[1] === "index.html") {
             if (recommendedToursList.length > 0) {
                 document.getElementsByTagName('main')[0].appendChild(section);
             }
+            const loading = document.getElementsByClassName('loading')[0];
+            loading.style.display = 'none';
         });
     }
+
 
 }
 
@@ -427,6 +491,9 @@ if (paths[1] === "tours") {
 
                 }
             }
+
+            const loading = document.getElementsByClassName('loading')[0];
+            loading.style.display = 'none';
         });
     }
 
@@ -492,9 +559,42 @@ window.onload = () => {
                         const doc = parser.parseFromString(data, 'text/html');
                         const profileContainer = doc.getElementsByClassName('signed')[0];
                         console.log(profileContainer.querySelector('.profile-description-text'));
-                        profileContainer.querySelector('.profile-description-text').innerText = profile_description || document.cookie.split(';').find(cookie => cookie.includes('profile_description')).split('=')[1] || 'No description';
+                        let profdesc;
+                        if (profile_description) {
+                            profdesc = profile_description;
+                        } else if (document.cookie.split(';').find(cookie => cookie.includes('profile_description'))) {
+                            profdesc = document.cookie.split(';').find(cookie => cookie.includes('profile_description')).split('=')[1];
+                        } else {
+                            profdesc = 'No description';
+                        }
+                        profileContainer.querySelector('.profile-description-text').innerText = profdesc;
                         profileContainer.querySelector('.user-visits-description').innerText = user_visits_description || 'No description';
                         profileContainer.querySelector('.profile-name').innerText = fullname;
+                        const travelList = responseData.tours;
+
+                        if (!travelList.length === 0) {
+
+                            profileContainer.querySelector('.tour-list').innerHTML = '';
+
+                        }
+
+                        for (let i = 0; i < travelList.length; i++) {
+                            const tour = travelList[i];
+                            const tourCard = document.createElement('div');
+                            tourCard.className = 'tour-card';
+                            tourCard.onclick = () => {
+                                window.location.href = `/tours/${tour.country}/${tour.name}`;
+                            }
+                            const img = document.createElement('img');
+                            img.src = tour.tour_thumbnail;
+                            img.alt = tour.tour_name;
+                            const span = document.createElement('span');
+                            span.innerText = tour.tour_name;
+                            tourCard.appendChild(img);
+                            tourCard.appendChild(span);
+                            profileContainer.querySelector('.tour-list').appendChild(tourCard);
+
+                        }
 
 
                         profileContainer.querySelector('.profile-description').addEventListener('click', () => {
@@ -534,7 +634,8 @@ window.onload = () => {
             console.error('Error with POST request:', error);
         }
 
-
+        const loading = document.getElementsByClassName('loading')[0];
+        loading.style.display = 'none';
 
 
     }

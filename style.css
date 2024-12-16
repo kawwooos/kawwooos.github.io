@@ -33,7 +33,7 @@ header>* {
 }
 
 header * {
-    font-size: 24px;
+    font-size: min(24px, max(16px, 4vw));
     font-weight: 600;
 }
 
@@ -42,11 +42,17 @@ header nav ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
+}
+
+header nav ul li {
+    width: 100%;
 }
 
 header nav ul li a {
     text-decoration: none;
+    width: 100%;
+    white-space: nowrap;
 }
 
 header nav ul li a.active {
@@ -124,6 +130,7 @@ main section div .country-list .country-card img {
 main section div .country-list .country-card span {
     font-size: 1.5rem;
     font-weight: 700;
+    text-align: center;
 }
 
 main section>div {
@@ -134,7 +141,7 @@ main section>div {
 }
 
 main section div .filter * {
-    font-size: 1.2rem;
+    font-size: min(1.2rem, max(16px, 4vw));
     font-weight: 600;
 }
 
@@ -157,11 +164,72 @@ main section div .search {
     gap: 1rem;
 }
 
+main section div .search #country-filter {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
 main section div .search #country-filter a {
     font-weight: 600;
-    font-size: 1.2rem;
+    font-size: min(1.2rem, max(16px, 4vw));
     text-decoration: none;
 }
+
+main section div .search #country-filter #budget-filter {
+    display: flex;
+    gap: 1rem;
+    background-color: #ffffffb2;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+main section div .search #country-filter #budget-filter.hidden {
+    display: none;
+}
+
+main section div .search #country-filter #budget-filter input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: min(1.2rem, max(16px, 4vw));
+    width: 100%;
+    max-width: 100px;
+}
+
+main section div .search #country-filter #budget-filter span {
+    font-size: min(1.2rem, max(16px, 4vw));
+}
+
+main section div .search #country-filter #budget-filter select {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: min(1.2rem, max(16px, 4vw));
+    width: 100%;
+    max-width: 100px;
+}
+
+main section div .search #country-filter #budget-filter select option {
+    background-color: #000;
+    color: #fff;
+    border: none;
+}
+
+main section div .search #country-filter #budget-filter select option::-webkit-scrollbar {
+    width: 2px;
+    border-radius: 10px;
+}
+
+main section div .search #country-filter #budget-filter select option::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+
 
 main section div .search .search-bar {
     display: flex;
@@ -177,7 +245,8 @@ main section div .search .search-bar input {
     border-radius: 5px;
     background-color: transparent;
     text-align: end;
-    font-size: 1.1rem;
+    font-size: min(1.2rem, max(16px, 4vw));
+    width: 100%;
 }
 
 main section div .search .search-bar button {
@@ -187,7 +256,7 @@ main section div .search .search-bar button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: min(1.2rem, max(16px, 4vw));
 }
 
 main section div .main-content {
@@ -332,13 +401,14 @@ main section div .profile-container .profile {
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    width: 40%;
+    width: 100%;
 }
 
 main section div .profile-container .profile img {
     width: 100px;
     height: 100px;
     object-fit: cover;
+    border-radius: 100%;
 }
 
 main section div .profile-container .profile div.profile-info {
@@ -352,7 +422,7 @@ main section div .profile-container .profile div.profile-info p {
 }
 
 main section div .profile-container .profile-description {
-    width: 60%;
+    width: 100%;
     border: 2px solid #fff;
     border-radius: 10px;
     padding: 1rem;
@@ -866,6 +936,51 @@ div.hidden-editor button {
     margin: 1rem;
 }
 
+div.loading {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: linear-gradient(140deg, #142c47 0%, #000 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    border-radius: 10px;
+    padding: 2rem;
+    z-index: 1;
+    width: 100%;
+    height: 100%;    
+}
+
+div.loading span {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border: solid #fff;
+    border-width: 2px 0 2px 0;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+    
+}
+
 
 @media screen and (max-width: 800px) {
     main section div div.main-content {
@@ -888,4 +1003,16 @@ div.hidden-editor button {
         border-radius: 10px;
     }
     
+    main section div .profile-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    header {
+        padding: 0 1rem;
+    }
+
+    header * {
+        font-size: min(16px, max(12px, 4vw));
+    }
 }
