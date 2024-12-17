@@ -305,6 +305,7 @@ main section div .main-content .country-map .pin {
 main section div .main-content .country-map img {
     object-fit: cover;
     border-radius: 10px;
+    max-width: 500px;
 }
 
 main section div .main-content svg path {
